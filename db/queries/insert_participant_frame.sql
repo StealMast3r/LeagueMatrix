@@ -1,0 +1,36 @@
+INSERT INTO participant_frames (
+    match_id,
+    frame_index,
+    participant_id,
+    puuid,
+    level,
+    current_gold,
+    total_gold,
+    xp,
+    minions_killed,
+    jungle_minions_killed,
+    gold_per_second,
+    time_enemy_spent_controlled,
+    position_x,
+    position_y,
+    champion_stats,
+    damage_stats
+)
+VALUES (
+    %(match_id)s,
+    %(frame_index)s,
+    %(participant_id)s,
+    %(puuid)s,
+    %(level)s,
+    %(current_gold)s,
+    %(total_gold)s,
+    %(xp)s,
+    %(minions_killed)s,
+    %(jungle_minions_killed)s,
+    %(gold_per_second)s,
+    %(time_enemy_spent_controlled)s,
+    %(position_x)s,
+    %(position_y)s,
+    %(champion_stats)s,
+    %(damage_stats)s
+);

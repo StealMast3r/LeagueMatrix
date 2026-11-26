@@ -1,0 +1,36 @@
+INSERT INTO teams (
+    match_id,
+    team_id,
+    win,
+    bans,
+    champion_kills,
+    first_blood,
+    baron_kills,
+    baron_first,
+    dragon_kills,
+    dragon_first,
+    inhibitor_kills,
+    inhibitor_first,
+    rift_herald_kills,
+    rift_herald_first,
+    tower_kills,
+    tower_first
+)
+VALUES (
+    %(match_id)s,
+    %(team_id)s,
+    %(win)s,
+    %(bans)s,
+    %(champion_kills)s,
+    %(first_blood)s,
+    %(baron_kills)s,
+    %(baron_first)s,
+    %(dragon_kills)s,
+    %(dragon_first)s,
+    %(inhibitor_kills)s,
+    %(inhibitor_first)s,
+    %(rift_herald_kills)s,
+    %(rift_herald_first)s,
+    %(tower_kills)s,
+    %(tower_first)s
+)

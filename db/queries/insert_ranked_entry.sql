@@ -1,0 +1,30 @@
+INSERT INTO rank_snapshots (
+    puuid,
+    region,
+    queue_type,
+    tier,
+    division,
+    league_points,
+    wins,
+    losses,
+    veteran,
+    inactive,
+    fresh_blood,
+    hot_streak,
+    captured_at
+)
+VALUES (
+    %(puuid)s,
+    %(region)s,
+    %(queue_type)s,
+    %(tier)s,
+    %(division)s,
+    %(league_points)s,
+    %(wins)s,
+    %(losses)s,
+    %(veteran)s,
+    %(inactive)s,
+    %(fresh_blood)s,
+    %(hot_streak)s,
+    NOW()
+);

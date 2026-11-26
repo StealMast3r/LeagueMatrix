@@ -1,0 +1,34 @@
+INSERT INTO matches (
+    match_id,
+    platform_id,
+    game_id,
+    queue_id,
+    game_mode,
+    game_type,
+    map_id,
+    game_version,
+    game_creation,
+    game_start_timestamp,
+    game_end_timestamp,
+    game_duration,
+    end_of_game_result,
+    patch,
+    data_version
+)
+VALUES (
+    %(match_id)s,
+    %(platform_id)s,
+    %(game_id)s,
+    %(queue_id)s,
+    %(game_mode)s,
+    %(game_type)s,
+    %(map_id)s,
+    %(game_version)s,
+    %(game_creation)s,
+    %(game_start_timestamp)s,
+    %(game_end_timestamp)s,
+    %(game_duration)s,
+    %(end_of_game_result)s,
+    %(patch)s,
+    %(data_version)s
+)
