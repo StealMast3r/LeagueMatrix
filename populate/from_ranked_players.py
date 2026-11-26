@@ -89,4 +89,4 @@ class RankedLadderPopulator:
                 except Exception as e:
                     print(f"Match {match_id} failed:", e)
 
-RankedLadderPopulator(100)
+RankedLadderPopulator(300)
