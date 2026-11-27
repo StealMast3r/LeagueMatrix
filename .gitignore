@@ -185,3 +185,6 @@ tests/
 
 # VS Code
 .vscode/
+
+# Caches
+db/cache/

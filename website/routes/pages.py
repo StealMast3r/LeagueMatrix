@@ -10,7 +10,8 @@ def index():
 
 @pages_bp.route("/dashboard")
 def dashboard():
-    return render_template("dashboard.html", stats=get_dashboard_stats())
+    stats = get_dashboard_stats()
+    return render_template("dashboard.html", db_usage=stats["db_usage"], rows_length=stats["rows_length"])
 
 
 @pages_bp.route("/summoners")

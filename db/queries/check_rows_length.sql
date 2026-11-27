@@ -1,5 +1,3 @@
-USE lolmatrixdb;
-
 SELECT 'match_timelines' AS table_name, COUNT(*) AS total_rows
 FROM match_timelines
 

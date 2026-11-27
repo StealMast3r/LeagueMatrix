@@ -5,7 +5,55 @@
 {% endblock %}
 
 {% block content %}
-    <h1>LeagueMatrix</h1>
-    <p>League of Legends Statistics</p>
-    {{ stats }}
+    <h1>LeagueMatrix Dashboard</h1><br>
+
+    <table border="1">
+        <tbody>
+            <td>
+                <h2>Disk Usage</h2>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>MB</th>
+                            <th>GB</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in db_usage %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ row.table_name }}</td>
+                                <td>{{ row.total_mb }}</td>
+                                <td>{{ row.total_gb }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table><br>
+            </td>
+            <td>
+                <h2>Rows Length</h2>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Rows</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in rows_length %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ row.table_name }}</td>
+                                <td>{{ row.total_rows }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table><br>
+            </td>
+        </tbody>
+    </table>
+    
 {% endblock %}
