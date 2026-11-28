@@ -161,19 +161,20 @@ def capture_summoner_ranks(summoner_name: str, server: str) -> list[dict]:
     ranked_entries = client.get_league_entries_by_puuid(summoner["puuid"])
     entries = build_ranked_entries(summoner["puuid"], server, ranked_entries)
 
-    for entry in entries:
+    with get_connection() as conn:
+        repo = RankedRepo(conn)
 
-        with get_connection() as conn:
+        for entry in entries:
 
-            latest = RankedRepo(conn).get_latest_entry(summoner["puuid"], server, entry["queue_type"])
+                latest = repo.get_latest_entry(summoner["puuid"], server, entry["queue_type"])
 
-            if latest is not None:
-                last_captured = latest["captured_at"]
+                if latest is not None:
+                    last_captured = latest["captured_at"]
 
-                if datetime.now() - last_captured < timedelta(minutes=30):
-                    continue
+                    if datetime.now() - last_captured < timedelta(minutes=30):
+                        continue
 
-            RankedRepo(conn).insert_entry(entry)
+                repo.insert_entry(entry)
 
     return ranked_entries
 
@@ -192,8 +193,9 @@ def upsert_champion_mastery(server: str, puuid: str) -> list[dict]:
     mastery_data = client.get_champion_mastery(puuid)
     mastery_entries = build_champion_mastery_entries(server, puuid, mastery_data)
     with get_connection() as conn:
+        repo = MasteryRepo(conn)
         for entry in mastery_entries:
-            MasteryRepo(conn).insert_entry(entry)
+            repo.insert_entry(entry)
 
     return mastery_data
 
@@ -227,11 +229,11 @@ def fetch_recent_match_ids(
         end_time=end_time
     )
 
-def fetch_ranked_league_entries(server: str, queue: str, division, tier, page) -> list[dict]:
+def fetch_ranked_league_entries(server: str, queue: str, division: str, tier: str, page: int) -> list[dict]:
     client = RiotApiClient(os.environ.get("RIOT_API_KEY"), server)
     return client.get_ranked_league_entries(tier, division, queue, page)
 
-def fetch_ranked_apex_entries(server, queue, tier) -> list:
+def fetch_ranked_apex_entries(server: str, queue: str, tier: str) -> list[dict]:
     client = RiotApiClient(os.environ.get("RIOT_API_KEY"), server)
     return client.get_high_tier_league_entries(queue, tier)["entries"]
 
@@ -239,17 +241,17 @@ def fetch_ranked_apex_entries(server, queue, tier) -> list:
 # RIOT STATIC API SERVICES
 # ============================================================
 
-def fetch_current_patch(server):
+def fetch_current_patch(server: str) -> dict:
     client = RiotApiClient(os.environ.get("RIOT_API_KEY"), server)
     return client.get_current_server_versions()
 
-def fetch_current_champions(server):
+def fetch_current_champions(server: str) -> dict:
     client = RiotApiClient(os.environ.get("RIOT_API_KEY"), server)
     return client.get_current_champions_json()
 
-def fetch_current_champion_information(server, champion_name):
+def fetch_current_champion_information(server: str, champion_name: str) -> dict:
     client = RiotApiClient(os.environ.get("RIOT_API_KEY"), server)
     return client.get_champion_information(champion_name)
 
-def fetch_current_champion_information_by_int(server, champion_int):
+def fetch_current_champion_information_by_int(server: str, champion_int: int) -> dict:
     pass
