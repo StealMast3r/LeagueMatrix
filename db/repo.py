@@ -56,7 +56,7 @@ class MatchRepo:
             self.conn.commit()
         except Exception:
             self.conn.rollback()
-            raise ValueError
+            raise
 
     def get_match_by_id(self, match_id):
         try:
@@ -64,7 +64,7 @@ class MatchRepo:
                 cur.execute(load_query("get_match_by_id"), {"match_id": match_id})
                 return cur.fetchone()
         except Exception:
-            raise ValueError
+            raise
 
     def get_participants_by_match_id(self, match_id):
         try:
