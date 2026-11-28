@@ -12,7 +12,7 @@ _RANKED_LEAGUES    = frozenset({"IRON", "BRONZE", "SILVER", "GOLD", "PLATINUM", 
 _ALL_LEAGUES       = _APEX_LEAGUES | _RANKED_LEAGUES
 
 _DIVISIONS         = frozenset({"I", "II", "III", "IV"})
-_SERVERS           = frozenset({"kr", "na1", "euw1", "br1", "eun1", "jp1", "la1"})
+_SERVERS           = frozenset({"kr", "na1", "euw1", "br1", "eun1"})
 
 _PLAYERS_PER_DISCOVERY = 2
 _MATCHES_PER_PLAYER = 2
@@ -45,7 +45,12 @@ class RankedLadderPopulator:
                 else:
                     random_division = random.choice(list(_DIVISIONS))
                     random_page = random.randint(1, 15)
-                    print(random_division, random_page)
+                    print(
+                        f"[{attempt + 1}/{discoveries}]",
+                        datetime.now().strftime("%d/%m/%Y, %H:%M:%S"),
+                        random_league, 
+                        random_division, 
+                        f"p.{random_page}")
                     players_discovered = self.normal_populator(random_server, random_queue, random_division, random_league, random_page)
 
                 players_discovered = players_discovered or []

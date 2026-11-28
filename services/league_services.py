@@ -67,7 +67,10 @@ def register_summoner(server: str, summoner_name: str | None = None, puuid: str 
 
 def get_stored_summoner(server: str, summoner_name: str) -> dict:
 
-    game_name, tag_line = split_riot_id(summoner_name)
+    try:
+        game_name, tag_line = split_riot_id(summoner_name)
+    except:
+        return None
 
     with get_connection() as conn:
         row = SummonerRepo(conn).get_by_name(game_name, tag_line, server)

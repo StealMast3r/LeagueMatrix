@@ -6,5 +6,62 @@
 
 <h1>Summoners</h1>
 <p>Summoner information and statistics.</p>
+<h2>Search Summoner</h2>
+
+<form method="POST" action="{{ url_for('summoners.search') }}">
+
+    <div>
+        <label for="riot_id">Riot ID:</label>
+        <input
+            type="text"
+            id="riot_id"
+            name="riot_id"
+            placeholder="GameName#TagLine"
+            required
+        >
+    </div>
+
+    <br>
+
+    <div>
+        <label for="region">Region:</label>
+
+        <select id="region" name="region" required>
+            <option value="NA1">North America</option>
+            <option value="EUW1">Europe West</option>
+        </select>
+    </div>
+
+    <br>
+
+    <button type="submit">Search</button>
+
+</form>
+
+{% if not_found %}
+    <h2>Summoner not found</h2>
+
+    <p>
+        {{ riot_id }} was not found in the database
+        for {{ region }}.
+    </p>
+
+    <p>
+        Check GameName#TagLine was used
+    </p>
+
+    <p>Would you like to register this summoner?</p>
+{% endif %}
+
+{% if summoner %}
+    <h2>Summoner found!</h2>
+    <pre>{{ summoner }}</pre>
+{% endif %}
+
+{% if error %}
+    <h2>Error</h2>
+    <pre>{{ error }}</pre>
+{% endif %}
+
 
 {% endblock %}

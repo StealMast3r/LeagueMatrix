@@ -1,6 +1,7 @@
 from flask import Flask
 
 from website.routes.pages import pages_bp
+from website.routes.summoners import summoners_bp
 
 app = Flask(
     __name__,
@@ -9,6 +10,10 @@ app = Flask(
 )
 
 app.register_blueprint(pages_bp)
+app.register_blueprint(
+    summoners_bp,
+    url_prefix="/summoners"
+)
 
 if __name__ == "__main__":
     app.run(debug=True)

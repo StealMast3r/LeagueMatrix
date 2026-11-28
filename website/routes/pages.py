@@ -7,22 +7,14 @@ pages_bp = Blueprint("pages", __name__)
 def index():
     return render_template("index.html")
 
-
 @pages_bp.route("/dashboard")
 def dashboard():
     stats = get_dashboard_stats()
     return render_template("dashboard.html", db_usage=stats["db_usage"], rows_length=stats["rows_length"])
 
-
-@pages_bp.route("/summoners")
-def summoners():
-    return render_template("summoners.html")
-
-
 @pages_bp.route("/matches")
 def matches():
     return render_template("matches.html")
-
 
 @pages_bp.route("/analytics")
 def analytics():
