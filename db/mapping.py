@@ -321,7 +321,7 @@ def build_timeline_frames_events_participants(timeline_data):
                 "champion_stats": json.dumps(participant.get("championStats", {})),
                 "damage_stats": json.dumps(participant.get("damageStats", {}))
             }
-        participant_rows.append(participant_row)
+            participant_rows.append(participant_row)
 
         for event in frame["events"]:
 

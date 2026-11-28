@@ -216,7 +216,7 @@ def fetch_recent_match_ids(
     count: int = 20,
     start_time: int | None = None,
     end_time: int | None = None,
-) -> list[dict]:
+) -> list[str]:
     client = RiotApiClient(os.environ.get("RIOT_API_KEY"), server)
     
     return client.get_matches_by_puuid(
@@ -252,6 +252,3 @@ def fetch_current_champions(server: str) -> dict:
 def fetch_current_champion_information(server: str, champion_name: str) -> dict:
     client = RiotApiClient(os.environ.get("RIOT_API_KEY"), server)
     return client.get_champion_information(champion_name)
-
-def fetch_current_champion_information_by_int(server: str, champion_int: int) -> dict:
-    pass

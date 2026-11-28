@@ -25,8 +25,14 @@ class SummonerRepo:
             cur.execute(load_query("get_summoner"), player_dict)
             return cur.fetchone()
 
-    def get_by_puuid():
-        pass
+    def get_by_puuid(self, server, puuid):
+        player_dict = {
+            "puuid": puuid,
+            "region": server
+        }
+        with self.conn.cursor() as cur:
+            cur.execute(load_query("get_summoner_by_puuid"), player_dict)
+            return cur.fetchone()
 
 class MatchRepo:
 
@@ -261,7 +267,7 @@ class RankedRepo:
         try:
             with self.conn.cursor() as cur:
                 cur.execute(load_query("get_latest_rank_by_queue"), search_dict)
-            return cur.fetchone()
+                return cur.fetchone()
         except:
             raise ValueError
 
@@ -283,6 +289,6 @@ class MasteryRepo:
         try:
             with self.conn.cursor() as cur:
                 cur.execute(load_query("get_mastery_entries"), {"puuid": puuid, "region": server})
-            return cur.fetchall()
+                return cur.fetchall()
         except Exception as e:
             raise ValueError(e)
