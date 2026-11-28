@@ -1,5 +1,4 @@
 import os
-
 from datetime import datetime, timedelta
 
 from riot.api_client import RiotApiClient, split_riot_id
@@ -27,7 +26,7 @@ from db.repo import (
 # CONSTANTS & HELPERS
 # ============================================================
 
-ARENA_QUEUE_IDS = {1700, 1710, 1740, 1750}
+ARENA_QUEUE_IDS = frozenset({1700, 1710, 1740, 1750})
 
 def is_arena_queue(queue_id: int) -> bool:
     return queue_id in ARENA_QUEUE_IDS
@@ -65,11 +64,11 @@ def register_summoner(server: str, summoner_name: str | None = None, puuid: str 
 
     return row
 
-def get_stored_summoner(server: str, summoner_name: str) -> dict:
+def get_stored_summoner(server: str, summoner_name: str) -> dict | None:
 
     try:
         game_name, tag_line = split_riot_id(summoner_name)
-    except:
+    except ValueError:
         return None
 
     with get_connection() as conn:
@@ -113,7 +112,7 @@ def get_stored_match(match_id: str) -> dict | None:
             return None
         return MatchRepo(conn).get_match_by_id(match_id)
 
-def get_match_participants(match_id: str) -> dict:
+def get_match_participants(match_id: str) -> list[dict]:
     with get_connection() as conn:
         return MatchRepo(conn).get_participants_by_match_id(match_id)
 
@@ -151,7 +150,7 @@ def get_stored_timeline(match_id: str) -> dict | None:
 # RANKED SERVICES
 # ============================================================
 
-def capture_summoner_ranks(summoner_name: str, server: str) -> list:
+def capture_summoner_ranks(summoner_name: str, server: str) -> list[dict]:
 
     client = RiotApiClient(os.environ.get("RIOT_API_KEY"), server)
 
@@ -187,7 +186,7 @@ def get_latest_rank_snapshots(server: str, puuid: str) -> dict:
 # CHAMPION MASTERY SERVICES
 # ============================================================
 
-def upsert_champion_mastery(server: str, puuid: str):
+def upsert_champion_mastery(server: str, puuid: str) -> list[dict]:
     client = RiotApiClient(os.environ.get("RIOT_API_KEY"), server)
     
     mastery_data = client.get_champion_mastery(puuid)
@@ -198,7 +197,7 @@ def upsert_champion_mastery(server: str, puuid: str):
 
     return mastery_data
 
-def get_mastery_entries(server, puuid):
+def get_mastery_entries(server: str, puuid: str) -> list[dict]:
     with get_connection() as conn:
         return MasteryRepo(conn).get_mastery_entries(server, puuid)
 
@@ -215,7 +214,7 @@ def fetch_recent_match_ids(
     count: int = 20,
     start_time: int | None = None,
     end_time: int | None = None,
-) -> list:
+) -> list[dict]:
     client = RiotApiClient(os.environ.get("RIOT_API_KEY"), server)
     
     return client.get_matches_by_puuid(
@@ -228,7 +227,7 @@ def fetch_recent_match_ids(
         end_time=end_time
     )
 
-def fetch_ranked_league_entries(server, queue, division, tier, page) -> list:
+def fetch_ranked_league_entries(server: str, queue: str, division, tier, page) -> list[dict]:
     client = RiotApiClient(os.environ.get("RIOT_API_KEY"), server)
     return client.get_ranked_league_entries(tier, division, queue, page)
 
