@@ -329,3 +329,40 @@ CREATE TABLE rank_snapshots (
         REFERENCES summoners (puuid, region)
         ON DELETE CASCADE
 );
+
+CREATE TABLE champion_mastery (
+
+    puuid                       VARCHAR(78) NOT NULL,
+    region                      VARCHAR(16) NOT NULL,
+    champion_id                 INT NOT NULL,
+
+    champion_level              TINYINT UNSIGNED NOT NULL,
+    champion_points             INT UNSIGNED NOT NULL,
+
+    last_play_time              BIGINT UNSIGNED NOT NULL,
+    champion_points_since_level INT UNSIGNED NOT NULL,
+    champion_points_until_level INT NOT NULL,
+
+    mark_required               TINYINT UNSIGNED NOT NULL,
+    tokens_earned               TINYINT UNSIGNED NOT NULL,
+
+    champion_season_milestone   INT UNSIGNED NOT NULL,
+
+    milestone_grades            JSON NULL,
+    next_season_milestone       JSON NULL,
+
+    last_updated                DATETIME NOT NULL
+                                DEFAULT CURRENT_TIMESTAMP
+                                ON UPDATE CURRENT_TIMESTAMP,
+
+    PRIMARY KEY (puuid, region, champion_id),
+
+    INDEX idx_mastery_champion (champion_id),
+    INDEX idx_mastery_points (puuid, region, champion_points),
+
+    CONSTRAINT fk_mastery_summoner
+        FOREIGN KEY (puuid, region)
+        REFERENCES summoners (puuid, region)
+        ON DELETE CASCADE
+
+);

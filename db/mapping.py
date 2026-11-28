@@ -365,3 +365,25 @@ def build_ranked_entries(puuid, region, ranked_entries):
         ranked_rows.append(row)
 
     return ranked_rows
+
+def build_champion_mastery_entries(server, puuid, mastery_data):
+    mastery_rows = []
+    for entry in mastery_data:
+        row = {
+            "puuid": puuid,
+            "region": server,
+            "champion_id": entry.get("championId", 0),
+            "champion_level": entry.get("championLevel", 0),
+            "champion_points": entry.get("championPoints", 0),
+            "last_play_time": entry.get("lastPlayTime", 0),
+            "champion_points_since_level": entry.get("championPointsSinceLastLevel", 0),
+            "champion_points_until_level": entry.get("championPointsUntilNextLevel", 0),
+            "mark_required": entry.get("markRequiredForNextLevel", 0),
+            "tokens_earned": entry.get("tokensEarned", 0),
+            "champion_season_milestone": entry.get("championSeasonMilestone", 0),
+            "milestone_grades": json.dumps(entry.get("milestoneGrades", [])),
+            "next_season_milestone": json.dumps(entry.get("nextSeasonMilestone", {}))
+        }
+        mastery_rows.append(row)
+
+    return mastery_rows

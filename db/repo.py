@@ -264,3 +264,25 @@ class RankedRepo:
             return cur.fetchone()
         except:
             raise ValueError
+
+class MasteryRepo:
+
+    def __init__(self, conn):
+        self.conn = conn
+
+    def insert_entry(self, entry):
+        try:
+            with self.conn.cursor() as cur:
+                cur.execute(load_query("upsert_mastery_entry"), entry)
+            self.conn.commit()
+        except Exception as e:
+            self.conn.rollback()
+            raise ValueError(e)
+
+    def get_mastery_entries(self, server, puuid):
+        try:
+            with self.conn.cursor() as cur:
+                cur.execute(load_query("get_mastery_entries"), {"puuid": puuid, "region": server})
+            return cur.fetchall()
+        except Exception as e:
+            raise ValueError(e)

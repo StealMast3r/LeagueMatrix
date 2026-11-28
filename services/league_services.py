@@ -12,13 +12,15 @@ from db.mapping import (
     build_match_timeline, 
     build_timeline_frames_events_participants, 
     build_subteam_rows, 
-    build_ranked_entries
+    build_ranked_entries,
+    build_champion_mastery_entries
 )
 from db.repo import (
     SummonerRepo, 
     MatchRepo, 
     TimelineRepo, 
-    RankedRepo
+    RankedRepo,
+    MasteryRepo
 )
 
 # ============================================================
@@ -177,6 +179,25 @@ def get_latest_rank_snapshots(server: str, puuid: str) -> dict:
 
     with get_connection() as conn:
         return RankedRepo(conn).get_all_latest_entries(puuid, server)
+
+# ============================================================
+# CHAMPION MASTERY SERVICES
+# ============================================================
+
+def upsert_champion_mastery(server: str, puuid: str):
+    client = RiotApiClient(os.environ.get("RIOT_API_KEY"), server)
+    
+    mastery_data = client.get_champion_mastery(puuid)
+    mastery_entries = build_champion_mastery_entries(server, puuid, mastery_data)
+    with get_connection() as conn:
+        for entry in mastery_entries:
+            MasteryRepo(conn).insert_entry(entry)
+
+    return mastery_data
+
+def get_mastery_entries(server, puuid):
+    with get_connection() as conn:
+        return MasteryRepo(conn).get_mastery_entries(server, puuid)
 
 # ============================================================
 # RIOT API SERVICES

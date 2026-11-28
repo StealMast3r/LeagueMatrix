@@ -35,4 +35,8 @@ SELECT 'timeline_events', COUNT(*) FROM timeline_events
 
 UNION ALL
 
-SELECT 'timeline_frames', COUNT(*) FROM timeline_frames;
+SELECT 'timeline_frames', COUNT(*) FROM timeline_frames
+
+UNION ALL
+
+SELECT 'champion_mastery', COUNT(*) FROM champion_mastery;
