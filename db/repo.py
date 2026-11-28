@@ -153,9 +153,9 @@ class TimelineRepo:
                 cur.executemany(load_query("insert_timeline_event"), timeline_events)
                 cur.executemany(load_query("insert_participant_frame"), participant_frames)
             self.conn.commit()
-        except:
+        except Exception:
             self.conn.rollback()
-            raise ValueError
+            raise
 
     def get_timeline(self, match_id: str) -> dict | None:
         search_dict = {"match_id": match_id}

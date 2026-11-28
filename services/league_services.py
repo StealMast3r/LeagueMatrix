@@ -115,6 +115,8 @@ def get_match_participants(match_id: str) -> list[dict]:
 def store_timeline(match_id: str) -> bool:
     
     with get_connection() as conn:
+        if not MatchRepo(conn).match_exists(match_id):
+            return False
         if TimelineRepo(conn).timeline_exists(match_id):
             return False
     
