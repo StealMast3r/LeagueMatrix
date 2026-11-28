@@ -236,19 +236,3 @@ def fetch_ranked_league_entries(server: str, queue: str, division: str, tier: st
 def fetch_ranked_apex_entries(server: str, queue: str, tier: str) -> list[dict]:
     client = RiotApiClient(os.environ.get("RIOT_API_KEY"), server)
     return client.get_high_tier_league_entries(queue, tier)["entries"]
-
-# ============================================================
-# RIOT STATIC API SERVICES
-# ============================================================
-
-def fetch_current_patch(server: str) -> dict:
-    client = RiotApiClient(os.environ.get("RIOT_API_KEY"), server)
-    return client.get_current_server_versions()
-
-def fetch_current_champions(server: str) -> dict:
-    client = RiotApiClient(os.environ.get("RIOT_API_KEY"), server)
-    return client.get_current_champions_json()
-
-def fetch_current_champion_information(server: str, champion_name: str) -> dict:
-    client = RiotApiClient(os.environ.get("RIOT_API_KEY"), server)
-    return client.get_champion_information(champion_name)
