@@ -2,6 +2,7 @@ import os
 from datetime import datetime, timedelta
 
 from riot.api_client import RiotApiClient, split_riot_id
+from riot.constants import is_arena_queue
 
 from db.conn import get_connection
 from db.mapping import (
@@ -21,15 +22,6 @@ from db.repo import (
     RankedRepo,
     MasteryRepo
 )
-
-# ============================================================
-# CONSTANTS & HELPERS
-# ============================================================
-
-ARENA_QUEUE_IDS = frozenset({1700, 1710, 1740, 1750})
-
-def is_arena_queue(queue_id: int) -> bool:
-    return queue_id in ARENA_QUEUE_IDS
 
 # ============================================================
 # SUMMONER SERVICES
@@ -166,15 +158,15 @@ def capture_summoner_ranks(summoner_name: str, server: str) -> list[dict]:
 
         for entry in entries:
 
-                latest = repo.get_latest_entry(summoner["puuid"], server, entry["queue_type"])
+            latest = repo.get_latest_entry(summoner["puuid"], server, entry["queue_type"])
 
-                if latest is not None:
-                    last_captured = latest["captured_at"]
+            if latest is not None:
+                last_captured = latest["captured_at"]
 
-                    if datetime.now() - last_captured < timedelta(minutes=30):
-                        continue
+                if datetime.now() - last_captured < timedelta(minutes=30):
+                    continue
 
-                repo.insert_entry(entry)
+            repo.insert_entry(entry)
 
     return ranked_entries
 

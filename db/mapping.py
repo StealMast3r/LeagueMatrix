@@ -1,9 +1,6 @@
 import json
 
-ARENA_QUEUE_IDS = {1700, 1710, 1740, 1750}
-
-def is_arena_match(queue_id: int) -> bool:
-    return queue_id in ARENA_QUEUE_IDS
+from riot.constants import is_arena_queue
 
 def build_match_row(match_data) -> dict:
     info = match_data["info"]
@@ -248,7 +245,7 @@ def build_participant_rows(match_data) -> list:
 
         }
         
-        if is_arena_match(match_data["info"]["queueId"]):
+        if is_arena_queue(match_data["info"]["queueId"]):
             row["subteam_id"] = participant.get("playerSubteamId")
         else:
             row["subteam_id"] = None
