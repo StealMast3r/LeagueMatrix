@@ -67,20 +67,14 @@ class MatchRepo:
             raise
 
     def get_participants_by_match_id(self, match_id):
-        try:
-            with self.conn.cursor() as cur:
-                cur.execute(load_query("get_participants_by_match_id"), {"match_id": match_id})
-                return cur.fetchall()
-        except Exception:
-            raise ValueError
+        with self.conn.cursor() as cur:
+            cur.execute(load_query("get_participants_by_match_id"), {"match_id": match_id})
+            return cur.fetchall()
 
     def get_participants_by_puuid(self, puuid):
-        try:
-            with self.conn.cursor() as cur:
-                cur.execute(load_query("get_participants_by_puuid"), {"puuid": puuid})
-                return cur.fetchall()
-        except Exception:
-            raise ValueError
+        with self.conn.cursor() as cur:
+            cur.execute(load_query("get_participants_by_puuid"), {"puuid": puuid})
+            return cur.fetchall()
 
     def get_matches(self, match_ids: list) -> list:
         if not match_ids:
@@ -245,9 +239,9 @@ class RankedRepo:
             with self.conn.cursor() as cur:
                 cur.execute(load_query("insert_ranked_entry"), entry)
             self.conn.commit()
-        except:
+        except Exception:
             self.conn.rollback()
-            raise ValueError
+            raise
 
     def get_all_latest_entries(self, puuid: str, server: str):
         search_dict = {
@@ -268,8 +262,8 @@ class RankedRepo:
             with self.conn.cursor() as cur:
                 cur.execute(load_query("get_latest_rank_by_queue"), search_dict)
                 return cur.fetchone()
-        except:
-            raise ValueError
+        except Exception:
+            raise
 
 class MasteryRepo:
 
@@ -281,9 +275,9 @@ class MasteryRepo:
             with self.conn.cursor() as cur:
                 cur.execute(load_query("upsert_mastery_entry"), entry)
             self.conn.commit()
-        except Exception as e:
+        except Exception:
             self.conn.rollback()
-            raise ValueError(e)
+            raise
 
     def get_mastery_entries(self, server, puuid):
         try:
